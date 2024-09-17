@@ -1,7 +1,7 @@
 package main
 
 import (
-	cpf "go_cpf/cpf_release"
+	cpf "github.com/nacioboi/go_cpf/cpf_release"
 )
 
 func main() {
