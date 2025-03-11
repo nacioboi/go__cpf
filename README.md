@@ -53,9 +53,22 @@ Restrict how often messages are printed:
 
 ```go
 cpf.Set(cpf_options.PRINT_IN_INTERVALS, 1)
+cpf.Log(INFO, "Only printed once 1.0\n")
+cpf.Log(INFO, "Only printed once 1.0\n")
+
+cpf.Log(INFO, "Only printed once 2.0\n")
+cpf.Log(INFO, "Only printed once 2.0\n")
+
+// Resulting output:
+/*
+Only printed once 1.0
+Only printed once 2.0
+*/
 ```
 
-This will only print every second log message.
+This will only print every second log message for each format string.
+
+That is to say that different format strings have a unique countdown.
 
 This is useful when calling `cpf.Log` in a loop since printing to screen is incredibly slow.
 

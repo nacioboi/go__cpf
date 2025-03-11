@@ -8,18 +8,9 @@ func _inner_LogImplementation(
 	requested_level int,
 	current_level int,
 	handlers map[int]CustomOutputHandlerEntry,
-	prefix_handler func() string,
-	interval_amount *uint16,
-	interval_count_down *uint16,
-	format string,
-	args ...interface{},
+	msg string,
 ) {
 	if requested_level <= current_level {
-		msg := fmt.Sprintf(
-			"%s%s",
-			prefix_handler(),
-			fmt.Sprintf(format, args...),
-		)
 		for _, handler := range handlers {
 			i := handler.I
 			if i == 0 { // custom func
@@ -35,7 +26,6 @@ func _inner_LogImplementation(
 			} else {
 				panic("something horrible happened")
 			}
-			*interval_count_down = *interval_amount
 		}
 	}
 }
@@ -46,35 +36,36 @@ func LogImplementation(
 	handlers map[int]CustomOutputHandlerEntry,
 	prefix_handler func() string,
 	interval_amount *uint16,
-	interval_count_down *uint16,
+	interval_count_downs map[string]uint16,
 	format string,
 	args ...interface{},
 ) {
+	msg := fmt.Sprintf(
+		"%s%s",
+		prefix_handler(),
+		fmt.Sprintf(format, args...),
+	)
 	if *interval_amount != 0 {
-		if *interval_count_down == 0 {
+		if _, inside := interval_count_downs[format]; !inside {
+			interval_count_downs[format] = *interval_amount
+		}
+		if interval_count_downs[format] == *interval_amount {
+			interval_count_downs[format] = 0
 			_inner_LogImplementation(
 				requested_level,
 				current_level,
 				handlers,
-				prefix_handler,
-				interval_amount,
-				interval_count_down,
-				format,
-				args...,
+				msg,
 			)
 		} else {
-			(*interval_count_down)--
+			interval_count_downs[format]++
 		}
 	} else {
 		_inner_LogImplementation(
 			requested_level,
 			current_level,
 			handlers,
-			prefix_handler,
-			interval_amount,
-			interval_count_down,
-			format,
-			args...,
+			msg,
 		)
 	}
 }

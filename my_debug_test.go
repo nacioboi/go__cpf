@@ -53,4 +53,11 @@ func TestDebug(t *testing.T) {
 	cpf.Add(cpf.DEFAULT_HANDLER_ID, nil)
 
 	cpf.Log(INFO, "This should not be printed to the file\n")
+
+	cpf.Set(cpf_options.PRINT_IN_INTERVALS, 1)
+	cpf.Log(INFO, "Only printed once 1.0\n")
+	cpf.Log(INFO, "Only printed once 1.0\n")
+
+	cpf.Log(INFO, "Only printed once 2.0\n")
+	cpf.Log(INFO, "Only printed once 2.0\n")
 }

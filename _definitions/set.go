@@ -8,7 +8,6 @@ func SetImplementation(
 	key cpf_options.T__Option,
 	value interface{},
 	interval_amount *uint16,
-	interval_count_down *uint16,
 	c__MAX_INTERVAL_AMOUNT uint16,
 	prefix_handler *func() string,
 	log_level *int,
@@ -24,7 +23,6 @@ func SetImplementation(
 				panic("cpf.Set: value is too large")
 			}
 			*interval_amount = uint16(v)
-			*interval_count_down = *interval_amount
 		default:
 			panic("cpf.Set: value is not int")
 		}
