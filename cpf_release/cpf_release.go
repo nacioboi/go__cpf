@@ -9,6 +9,10 @@ import "github.com/nacioboi/go__cpf/cpf_options"
 
 type CustomOutputHandler = func(int, string)
 
+func Add(key int, value interface{}) {}
+
+func Del(key int) {}
+
 func Set(key cpf_options.T__Option, value interface{}) {}
 
 func Log(level int, format string, args ...interface{}) {}
