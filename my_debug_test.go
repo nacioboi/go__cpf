@@ -1,11 +1,12 @@
 package main
 
 import (
+	"os"
 	"testing"
 	"time"
 
-	cpf "github.com/nacioboi/go_cpf/cpf_debug"
-	"github.com/nacioboi/go_cpf/cpf_options"
+	cpf "github.com/nacioboi/go__cpf/cpf_debug"
+	"github.com/nacioboi/go__cpf/cpf_options"
 )
 
 func TestDebug(t *testing.T) {
@@ -33,4 +34,20 @@ func TestDebug(t *testing.T) {
 		55,
 		[]int{1, 2, 3},
 	)
+
+	file, err := os.Create("test.log")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
+	defer file.Sync()
+
+	cpf.Set(cpf_options.PRINT_IN_INTERVALS, 0)
+	cpf.Add(1, file)
+
+	cpf.Log(INFO, "This should be printed to the file\n")
+
+	cpf.Del(1)
+
+	cpf.Log(INFO, "This should not be printed to the file\n")
 }

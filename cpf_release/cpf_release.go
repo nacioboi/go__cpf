@@ -5,7 +5,9 @@
 
 package cpf_release
 
-import "github.com/nacioboi/go_cpf/cpf_options"
+import "github.com/nacioboi/go__cpf/cpf_options"
+
+type CustomOutputHandler = func(int, string)
 
 func Set(key cpf_options.T__Option, value interface{}) {}
 

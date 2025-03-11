@@ -1,10 +1,7 @@
 package definitions
 
 import (
-	"fmt"
-	"io"
-
-	"github.com/nacioboi/go_cpf/cpf_options"
+	"github.com/nacioboi/go__cpf/cpf_options"
 )
 
 func SetImplementation(
@@ -13,7 +10,6 @@ func SetImplementation(
 	interval_amount *uint16,
 	interval_count_down *uint16,
 	c__MAX_INTERVAL_AMOUNT uint16,
-	output_func *func(int, string),
 	prefix_handler *func() string,
 	log_level *int,
 ) {
@@ -31,15 +27,6 @@ func SetImplementation(
 			*interval_count_down = *interval_amount
 		default:
 			panic("cpf.Set: value is not int")
-		}
-	case cpf_options.OUTPUT_HANDLER:
-		switch v := value.(type) {
-		case func(int, string):
-			*output_func = v
-		case io.Writer:
-			*output_func = func(l int, s string) { fmt.Fprint(v, s) }
-		default:
-			panic("cpf.Set: value must be func(int, string) or io.Writer")
 		}
 	case cpf_options.PREFIX_HANDLER:
 		switch v := value.(type) {

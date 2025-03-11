@@ -3,10 +3,8 @@
 package cpf_debug
 
 import (
-	"fmt"
-
-	definitions "github.com/nacioboi/go_cpf/_definitions"
-	"github.com/nacioboi/go_cpf/cpf_options"
+	definitions "github.com/nacioboi/go__cpf/_definitions"
+	"github.com/nacioboi/go__cpf/cpf_options"
 )
 
 const c__MAX_INTERVAL_AMOUNT = 1<<16 - 1
@@ -16,14 +14,36 @@ var (
 	interval_count_down uint16
 	log_level           int
 
-	output_handler func(int, string) = func(l int, s string) {
-		if l <= log_level {
-			fmt.Print(s)
-		}
-	}
+	output_handlers = make(map[int]definitions.CustomOutputHandlerEntry, 0)
 
-	prefix_handler 	    func() string
+	prefix_handler func() string
 )
+
+func init() {
+	default_output_handler := func(message string) {
+		print(message)
+	}
+	entry := definitions.CustomOutputHandlerEntry{
+		I: 0,
+		H: default_output_handler,
+	}
+	output_handlers[1<<32-1] = entry
+}
+
+func Add(key int, value interface{}) {
+	definitions.AddImplementation(
+		key,
+		value,
+		output_handlers,
+	)
+}
+
+func Del(key int) {
+	definitions.DelImplementation(
+		key,
+		output_handlers,
+	)
+}
 
 func Set(key cpf_options.T__Option, value interface{}) {
 	definitions.SetImplementation(
@@ -32,7 +52,6 @@ func Set(key cpf_options.T__Option, value interface{}) {
 		&interval_amount,
 		&interval_count_down,
 		c__MAX_INTERVAL_AMOUNT,
-		&output_handler,
 		&prefix_handler,
 		&log_level,
 	)
@@ -40,13 +59,14 @@ func Set(key cpf_options.T__Option, value interface{}) {
 
 func Log(level int, format string, args ...interface{}) {
 	definitions.LogImplementation(
-	level,
-	output_handler,
-	prefix_handler,
-	&interval_amount,
-	&interval_count_down,
-	format,
-	args...,
+		level,
+		log_level,
+		output_handlers,
+		prefix_handler,
+		&interval_amount,
+		&interval_count_down,
+		format,
+		args...,
 	)
 }
 

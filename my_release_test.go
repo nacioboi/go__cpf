@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nacioboi/go_cpf/cpf_options"
-	cpf "github.com/nacioboi/go_cpf/cpf_release"
+	"github.com/nacioboi/go__cpf/cpf_options"
+	cpf "github.com/nacioboi/go__cpf/cpf_release"
 )
 
 func TestRelease(t *testing.T) {
