@@ -14,7 +14,21 @@ func AddImplementation(
 	key int,
 	value interface{},
 	handlers map[int]CustomOutputHandlerEntry,
+	default_handler CustomOutputHandler,
 ) {
+	if key == 1<<32-1 {
+		if _, is_inside := handlers[key]; is_inside {
+			panic("cpf.Add: key already within map")
+		} else {
+			entry := CustomOutputHandlerEntry{
+				I: 0,
+				H: default_handler,
+			}
+			handlers[key] = entry
+			return
+		}
+	}
+
 	if _, is_inside := handlers[key]; is_inside {
 		panic("cpf.Add: key already exists")
 	}

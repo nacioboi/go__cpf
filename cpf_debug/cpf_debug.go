@@ -9,6 +9,8 @@ import (
 
 const c__MAX_INTERVAL_AMOUNT = 1<<16 - 1
 
+const DEFAULT_HANDLER_ID = 1<<32 - 1
+
 var (
 	interval_amount     uint16
 	interval_count_down uint16
@@ -17,12 +19,13 @@ var (
 	output_handlers = make(map[int]definitions.CustomOutputHandlerEntry, 0)
 
 	prefix_handler func() string
+
+	default_output_handler = func(message string) {
+		print(message)
+	}
 )
 
 func init() {
-	default_output_handler := func(message string) {
-		print(message)
-	}
 	entry := definitions.CustomOutputHandlerEntry{
 		I: 0,
 		H: default_output_handler,
@@ -35,6 +38,7 @@ func Add(key int, value interface{}) {
 		key,
 		value,
 		output_handlers,
+		default_output_handler,
 	)
 }
 

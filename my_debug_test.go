@@ -45,9 +45,12 @@ func TestDebug(t *testing.T) {
 	cpf.Set(cpf_options.PRINT_IN_INTERVALS, 0)
 	cpf.Add(1, file)
 
-	cpf.Log(INFO, "This should be printed to the file\n")
+	cpf.Del(cpf.DEFAULT_HANDLER_ID)
+
+	cpf.Log(INFO, "This should be printed to the file only\n")
 
 	cpf.Del(1)
+	cpf.Add(cpf.DEFAULT_HANDLER_ID, nil)
 
 	cpf.Log(INFO, "This should not be printed to the file\n")
 }

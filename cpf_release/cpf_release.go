@@ -7,6 +7,8 @@ package cpf_release
 
 import "github.com/nacioboi/go__cpf/cpf_options"
 
+const DEFAULT_HANDLER_ID = 1<<32 - 1
+
 type CustomOutputHandler = func(int, string)
 
 func Add(key int, value interface{}) {}
